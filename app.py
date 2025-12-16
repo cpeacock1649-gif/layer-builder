@@ -89,42 +89,48 @@ st.markdown(
     [data-testid="stMetricLabel"] > div:first-child {
         overflow: hidden !important;
     }
-    
 </style>
-
-<script>
-// Remove broken Material Icons text (keyboard_arrow_right, etc.)
-function removeIconText() {
-    // Find all elements and check for icon text
-    const walker = document.createTreeWalker(
-        document.body,
-        NodeFilter.SHOW_TEXT,
-        null,
-        false
-    );
-
-    const nodesToRemove = [];
-    while (walker.nextNode()) {
-        const text = walker.currentNode.textContent;
-        if (text && (text.includes('keyboard_arrow') ||
-                     text.includes('expand_') ||
-                     text.includes('chevron_'))) {
-            nodesToRemove.push(walker.currentNode);
-        }
-    }
-
-    nodesToRemove.forEach(node => {
-        node.textContent = '';
-    });
-}
-
-// Run on load and observe for changes
-removeIconText();
-const observer = new MutationObserver(removeIconText);
-observer.observe(document.body, { childList: true, subtree: true });
-</script>
 """,
     unsafe_allow_html=True,
+)
+
+# JavaScript component to remove broken Material Icons text
+import streamlit.components.v1 as components
+
+components.html(
+    """
+    <script>
+    function removeIconText() {
+        const doc = window.parent.document;
+        const walker = doc.createTreeWalker(
+            doc.body,
+            NodeFilter.SHOW_TEXT,
+            null,
+            false
+        );
+
+        const nodesToRemove = [];
+        while (walker.nextNode()) {
+            const text = walker.currentNode.textContent;
+            if (text && (text.includes('keyboard_arrow') ||
+                         text.includes('expand_') ||
+                         text.includes('chevron_'))) {
+                nodesToRemove.push(walker.currentNode);
+            }
+        }
+
+        nodesToRemove.forEach(node => {
+            node.textContent = '';
+        });
+    }
+
+    // Run immediately and set up observer
+    removeIconText();
+    const observer = new MutationObserver(removeIconText);
+    observer.observe(window.parent.document.body, { childList: true, subtree: true });
+    </script>
+    """,
+    height=0,
 )
 
 
