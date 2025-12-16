@@ -90,40 +90,39 @@ st.markdown(
         overflow: hidden !important;
     }
     
-    /* AGGRESSIVE FIX: Hide ALL icon-related elements in expanders */
-    /* Remove arrows entirely to fix broken Material Icons text */
-    [data-testid="stExpanderToggleIcon"],
-    [data-testid="stExpander"] svg,
-    [data-testid="stExpander"] [class*="icon"],
-    [data-testid="stExpander"] [class*="Icon"],
-    details[data-testid="stExpander"] summary > span:first-child,
-    .streamlit-expanderHeader svg,
-    .streamlit-expanderHeader [class*="icon"] {
-        display: none !important;
-        visibility: hidden !important;
-        width: 0 !important;
-        height: 0 !important;
-        font-size: 0 !important;
-        line-height: 0 !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-        position: absolute !important;
-        left: -99999px !important;
-        clip: rect(0, 0, 0, 0) !important;
-        overflow: hidden !important;
-    }
-
-    /* Hide any text that looks like icon names */
-    details[data-testid="stExpander"] summary {
-        font-size: 0 !important;
-    }
-
-    details[data-testid="stExpander"] summary > div,
-    details[data-testid="stExpander"] summary p,
-    details[data-testid="stExpander"] summary span:not(:first-child) {
-        font-size: 1rem !important;
-    }
 </style>
+
+<script>
+// Remove broken Material Icons text (keyboard_arrow_right, etc.)
+function removeIconText() {
+    // Find all elements and check for icon text
+    const walker = document.createTreeWalker(
+        document.body,
+        NodeFilter.SHOW_TEXT,
+        null,
+        false
+    );
+
+    const nodesToRemove = [];
+    while (walker.nextNode()) {
+        const text = walker.currentNode.textContent;
+        if (text && (text.includes('keyboard_arrow') ||
+                     text.includes('expand_') ||
+                     text.includes('chevron_'))) {
+            nodesToRemove.push(walker.currentNode);
+        }
+    }
+
+    nodesToRemove.forEach(node => {
+        node.textContent = '';
+    });
+}
+
+// Run on load and observe for changes
+removeIconText();
+const observer = new MutationObserver(removeIconText);
+observer.observe(document.body, { childList: true, subtree: true });
+</script>
 """,
     unsafe_allow_html=True,
 )
