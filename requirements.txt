@@ -1,0 +1,16 @@
+# Insurance Layer Builder Dependencies
+
+# Core web framework
+streamlit>=1.28.0
+
+# Data manipulation and analysis
+pandas>=2.0.0
+
+# Visualization
+plotly>=5.17.0
+kaleido>=0.2.1  # Required for PDF export of Plotly charts
+
+# Document generation and parsing
+openpyxl>=3.1.0  # Excel file generation
+python-docx>=1.0.0  # Word document generation
+pdfplumber>=0.10.0  # PDF parsing for insurance document import
