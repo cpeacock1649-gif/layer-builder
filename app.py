@@ -90,27 +90,47 @@ st.markdown(
         overflow: hidden !important;
     }
     
-    /* Hide only SVG icons in expander headers */
+    /* Completely hide Material Icons text that appears when font doesn't load */
+    /* This targets the expander toggle icon and any child elements */
+    [data-testid="stExpanderToggleIcon"],
+    [data-testid="stExpanderToggleIcon"] * {
+        font-size: 0 !important;
+        color: transparent !important;
+        visibility: hidden !important;
+        width: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        position: absolute !important;
+        left: -9999px !important;
+    }
+
+    /* Hide SVG icons in expander headers */
     details[data-testid="stExpander"] summary svg {
         display: none !important;
     }
-    
-    /* Hide any icon wrapper that contains broken text - be very specific */
-    [data-testid="stExpanderToggleIcon"] {
-        font-size: 0 !important;
-        width: 1rem !important;
-        overflow: hidden !important;
+
+    /* Style the expander summary to add our own arrow */
+    details[data-testid="stExpander"] summary {
+        position: relative !important;
+        padding-left: 1.5rem !important;
     }
-    
-    /* Replace with clean Unicode arrows */
-    [data-testid="stExpanderToggleIcon"]::before {
-        content: "▶";
-        font-size: 0.75rem !important;
-        display: inline-block !important;
+
+    /* Add clean Unicode arrow before the expander title */
+    details[data-testid="stExpander"] summary::before {
+        content: "▶" !important;
+        position: absolute !important;
+        left: 0.5rem !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        font-size: 0.7rem !important;
+        color: #6c757d !important;
+        visibility: visible !important;
+        transition: transform 0.2s ease !important;
     }
-    
-    details[data-testid="stExpander"][open] [data-testid="stExpanderToggleIcon"]::before {
-        content: "▼";
+
+    /* Rotate arrow when expander is open */
+    details[data-testid="stExpander"][open] summary::before {
+        content: "▼" !important;
     }
 </style>
 """,
