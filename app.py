@@ -90,47 +90,38 @@ st.markdown(
         overflow: hidden !important;
     }
     
-    /* Completely hide Material Icons text that appears when font doesn't load */
-    /* This targets the expander toggle icon and any child elements */
+    /* AGGRESSIVE FIX: Hide ALL icon-related elements in expanders */
+    /* Remove arrows entirely to fix broken Material Icons text */
     [data-testid="stExpanderToggleIcon"],
-    [data-testid="stExpanderToggleIcon"] * {
-        font-size: 0 !important;
-        color: transparent !important;
+    [data-testid="stExpander"] svg,
+    [data-testid="stExpander"] [class*="icon"],
+    [data-testid="stExpander"] [class*="Icon"],
+    details[data-testid="stExpander"] summary > span:first-child,
+    .streamlit-expanderHeader svg,
+    .streamlit-expanderHeader [class*="icon"] {
+        display: none !important;
         visibility: hidden !important;
         width: 0 !important;
         height: 0 !important;
+        font-size: 0 !important;
+        line-height: 0 !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        position: absolute !important;
+        left: -99999px !important;
+        clip: rect(0, 0, 0, 0) !important;
         overflow: hidden !important;
-        position: absolute !important;
-        left: -9999px !important;
     }
 
-    /* Hide SVG icons in expander headers */
-    details[data-testid="stExpander"] summary svg {
-        display: none !important;
-    }
-
-    /* Style the expander summary to add our own arrow */
+    /* Hide any text that looks like icon names */
     details[data-testid="stExpander"] summary {
-        position: relative !important;
-        padding-left: 1.5rem !important;
+        font-size: 0 !important;
     }
 
-    /* Add clean Unicode arrow before the expander title */
-    details[data-testid="stExpander"] summary::before {
-        content: "▶" !important;
-        position: absolute !important;
-        left: 0.5rem !important;
-        top: 50% !important;
-        transform: translateY(-50%) !important;
-        font-size: 0.7rem !important;
-        color: #6c757d !important;
-        visibility: visible !important;
-        transition: transform 0.2s ease !important;
-    }
-
-    /* Rotate arrow when expander is open */
-    details[data-testid="stExpander"][open] summary::before {
-        content: "▼" !important;
+    details[data-testid="stExpander"] summary > div,
+    details[data-testid="stExpander"] summary p,
+    details[data-testid="stExpander"] summary span:not(:first-child) {
+        font-size: 1rem !important;
     }
 </style>
 """,
